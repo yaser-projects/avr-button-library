@@ -1,12 +1,21 @@
 {
-    "name": "avr-button-library",
+    "name": "AVR Button Library",
     "version": "1.0.0",
-    "description": "AVR Button Library with debouncing support",
-    "keywords": "avr,atmega, button, debounce, systick",
+    "description": "Button and Systick library for AVR",
+    "keywords": ["avr", "button", "systick"],
+    "authors": [
+        {
+            "name": "Yaser Rashnabadi",
+            "email": "your@email.com"
+        }
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/yaser-projects/avr-button-library.git"
     },
     "frameworks": ["arduino"],
-    "platforms": ["atmelavr"]
+    "platforms": ["atmelavr"],
+    "build": {
+        "srcDir": "./src"
+    }
 }
