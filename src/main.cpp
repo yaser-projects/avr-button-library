@@ -29,7 +29,7 @@
 static uint32_t Code;
 static uint32_t MirrorCode;
 static uint8_t OutPut;
-static uint8_t id;
+
 //======================================================================================================
 // ----------------------------------------- Macro Setting ---------------------------------------------
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
@@ -65,8 +65,8 @@ static uint8_t id;
 // ----------------------------------------------------------------------- Auxiliary functions Macro
 //==================================================================================================
 
-#define Reley__ON(_byte_, _bit_) ((_byte_) |= (1UL << (_bit_)))
-#define Reley_OFF(_byte_, _bit_) ((_byte_) &= ~(1UL << (_bit_)))
+#define LED__ON(_byte_, _bit_) ((_byte_) |= (1UL << (_bit_)))
+#define LED_OFF(_byte_, _bit_) ((_byte_) &= ~(1UL << (_bit_)))
 
 
 //==================================================================================================
@@ -90,7 +90,7 @@ bool task_save1(BUTTON &button)
 bool task_save2(BUTTON &button)
 {
     uint8_t save = 0;
-    Reley__ON(save, RELEY2);
+    LED__ON(save, RELEY2);
    
     PORTC = OutPut | save;
     return true;
@@ -99,7 +99,7 @@ bool task_save2(BUTTON &button)
 bool task_save3(BUTTON &button)
 {
     uint8_t save = 0;
-    Reley__ON(save, RELEY3);
+    LED__ON(save, RELEY3);
     
     PORTC = OutPut | save;
     return true;
@@ -108,7 +108,7 @@ bool task_save3(BUTTON &button)
 bool task_save4(BUTTON &button)
 {
     uint8_t save = 0;
-    Reley__ON(save, RELEY4);
+    LED__ON(save, RELEY4);
    
     PORTC = OutPut | save;
     return true;
@@ -120,9 +120,9 @@ bool task_delete1(BUTTON &button)
 {
     uint8_t _delete = 0xFF;
 
-    Reley_OFF(_delete, RELEY1);
+    LED_OFF(_delete, RELEY1);
     
-    Reley_OFF(OutPut, RELEY1);
+    LED_OFF(OutPut, RELEY1);
     PORTC = OutPut;
     return true;
 }
@@ -131,9 +131,9 @@ bool task_delete2(BUTTON &button)
 {
     uint8_t _delete = 0xFF;
 
-    Reley_OFF(_delete, RELEY2);
+    LED_OFF(_delete, RELEY2);
    
-    Reley_OFF(OutPut, RELEY2);
+    LED_OFF(OutPut, RELEY2);
     PORTC = OutPut;
     return true;
 }
@@ -142,9 +142,9 @@ bool task_delete3(BUTTON &button)
 {
     uint8_t _delete = 0xFF;
 
-    Reley_OFF(_delete, RELEY3);
+    LED_OFF(_delete, RELEY3);
     
-    Reley_OFF(OutPut, RELEY3);
+    LED_OFF(OutPut, RELEY3);
     PORTC = OutPut;
     return true;
 }
@@ -153,9 +153,9 @@ bool task_delete4(BUTTON &button)
 {
     uint8_t _delete = 0xFF;
 
-    Reley_OFF(_delete, RELEY4);
+    LED_OFF(_delete, RELEY4);
    
-    Reley_OFF(OutPut, RELEY4);
+    LED_OFF(OutPut, RELEY4);
     PORTC = OutPut;
     return true;
 }
@@ -172,21 +172,21 @@ bool task_Jumper1(BUTTON &button)
 
 bool task_Jumper2(BUTTON &button)
 {
-    Reley_OFF(OutPut, RELEY2);
+    LED_OFF(OutPut, RELEY2);
     PORTC = OutPut;
     return true;
 }
 
 bool task_Jumper3(BUTTON &button)
 {
-    Reley_OFF(OutPut, RELEY3);
+    LED_OFF(OutPut, RELEY3);
     PORTC = OutPut;
     return true;
 }
 
 bool task_Jumper4(BUTTON &button)
 {
-    Reley_OFF(OutPut, RELEY4);
+    LED_OFF(OutPut, RELEY4);
     PORTC = OutPut;
     return true;
 }
