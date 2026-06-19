@@ -49,7 +49,7 @@ static uint8_t OutPut;
 #define JUMPER3 3
 #define JUMPER4 2
 //----------------------------------------------------
-#define RELEY1 3
+#define LED1 3
 #define RELEY2 2
 #define RELEY3 1
 #define RELEY4 0
@@ -73,7 +73,7 @@ static uint8_t OutPut;
 //==================================================================================================
 //----------------- Save functions - Turn ON relays for Save operation -----------------------------
 
-bool task_save1(BUTTON &button)
+bool task_LedOn(BUTTON &button)
 {
     PORTC++;
     // uint8_t save = 0;
@@ -86,7 +86,7 @@ bool task_save1(BUTTON &button)
     return true; //<-- Return true for execute handler only once after button state changed
 }
 
-bool task_save2(BUTTON &button)
+bool task_LedOff(BUTTON &button)
 {
     uint8_t save = 0;
     LED__ON(save, RELEY2);
@@ -119,9 +119,9 @@ bool task_delete1(BUTTON &button)
 {
     uint8_t _delete = 0xFF;
 
-    LED_OFF(_delete, RELEY1);
+    LED_OFF(_delete, LED1);
 
-    LED_OFF(OutPut, RELEY1);
+    LED_OFF(OutPut, LED1);
     PORTC = OutPut;
     return true;
 }
@@ -202,8 +202,8 @@ int main()
     PORTB = 0xFF;
     DDRB = 0x00;
 
-    PORTC = (uint8_t)(0xFF & ~((1 << RELEY1) | (1 << RELEY2) | (1 << RELEY3) | (1 << RELEY4)));
-    DDRC = (uint8_t)(0x00 | ((1 << RELEY1) | (1 << RELEY2) | (1 << RELEY3) | (1 << RELEY4)));
+    PORTC = (uint8_t)(0xFF & ~((1 << LED1) | (1 << RELEY2) | (1 << RELEY3) | (1 << RELEY4)));
+    DDRC = (uint8_t)(0x00 | ((1 << LED1) | (1 << RELEY2) | (1 << RELEY3) | (1 << RELEY4)));
 
     PORTD = 0xFF;
     DDRD = 0x00;
@@ -226,8 +226,8 @@ int main()
     BUTTON Jumper3(PORTB, DDRB, PINB, JUMPER3, BUTTON_MODE_PULL_UP, 10, 10);
     BUTTON Jumper4(PORTB, DDRB, PINB, JUMPER4, BUTTON_MODE_PULL_UP, 10, 10);
 
-    Save1.bind(BUTTON_MODE_DELAY_ONCE, task_save1);
-    Save2.bind(BUTTON_MODE_DELAY_ONCE, task_save2);
+    Save1.bind(BUTTON_MODE_DELAY_ONCE, task_LedOn);
+    Save2.bind(BUTTON_MODE_DELAY_ONCE, task_LedOff);
     Save3.bind(BUTTON_MODE_DELAY_ONCE, task_save3);
     Save4.bind(BUTTON_MODE_DELAY_ONCE, task_save4);
 
