@@ -24,7 +24,7 @@ enum ButtonMode
 
 enum ButtonStatus
 {
-	BUTTON_STATE_UNKNOWN = -1,
+	BUTTON_STATE_UNKNOWN = -1, // کلید نامشخص است
 	BUTTON_STATE_RELEASED = 0, // کلید آزاد است
 	BUTTON_STATE_PRESSED	   // کلید فشرده شده است
 };
