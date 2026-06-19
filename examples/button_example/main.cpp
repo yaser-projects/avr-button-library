@@ -68,7 +68,6 @@ static uint8_t OutPut;
 #define LED__ON(_byte_, _bit_) ((_byte_) |= (1UL << (_bit_)))
 #define LED_OFF(_byte_, _bit_) ((_byte_) &= ~(1UL << (_bit_)))
 
-
 //==================================================================================================
 // ----------------------------------------------------------------------------- Auxiliary functions
 //==================================================================================================
@@ -91,7 +90,7 @@ bool task_save2(BUTTON &button)
 {
     uint8_t save = 0;
     LED__ON(save, RELEY2);
-   
+
     PORTC = OutPut | save;
     return true;
 }
@@ -100,7 +99,7 @@ bool task_save3(BUTTON &button)
 {
     uint8_t save = 0;
     LED__ON(save, RELEY3);
-    
+
     PORTC = OutPut | save;
     return true;
 }
@@ -109,7 +108,7 @@ bool task_save4(BUTTON &button)
 {
     uint8_t save = 0;
     LED__ON(save, RELEY4);
-   
+
     PORTC = OutPut | save;
     return true;
 }
@@ -121,7 +120,7 @@ bool task_delete1(BUTTON &button)
     uint8_t _delete = 0xFF;
 
     LED_OFF(_delete, RELEY1);
-    
+
     LED_OFF(OutPut, RELEY1);
     PORTC = OutPut;
     return true;
@@ -132,7 +131,7 @@ bool task_delete2(BUTTON &button)
     uint8_t _delete = 0xFF;
 
     LED_OFF(_delete, RELEY2);
-   
+
     LED_OFF(OutPut, RELEY2);
     PORTC = OutPut;
     return true;
@@ -143,7 +142,7 @@ bool task_delete3(BUTTON &button)
     uint8_t _delete = 0xFF;
 
     LED_OFF(_delete, RELEY3);
-    
+
     LED_OFF(OutPut, RELEY3);
     PORTC = OutPut;
     return true;
@@ -154,7 +153,7 @@ bool task_delete4(BUTTON &button)
     uint8_t _delete = 0xFF;
 
     LED_OFF(_delete, RELEY4);
-   
+
     LED_OFF(OutPut, RELEY4);
     PORTC = OutPut;
     return true;
@@ -164,7 +163,7 @@ bool task_delete4(BUTTON &button)
 
 bool task_Jumper1(BUTTON &button)
 {
-   // PORTC++;
+    // PORTC++;
     // Reley_OFF(OutPut, RELEY1);
     // PORTC = OutPut;
     return true;
@@ -197,7 +196,7 @@ bool task_Jumper4(BUTTON &button)
 int main()
 {
 
-PORTA = 0xFF;
+    PORTA = 0xFF;
     DDRA = 0x00;
 
     PORTB = 0xFF;
@@ -212,20 +211,20 @@ PORTA = 0xFF;
     ACSR = 0x80;
     SFIOR = 0x00;
 
-    BUTTON Save1(PORTD, DDRD, PIND, SAVE1, BUTTON_MODE_PULL_UP, 10,10); //<-- Save1 connected to GND
-    BUTTON Save2(PORTD, DDRD, PIND, SAVE2, BUTTON_MODE_PULL_UP, 10,10);
-    BUTTON Save3(PORTB, DDRB, PINB, SAVE3, BUTTON_MODE_PULL_UP, 10,10);
-    BUTTON Save4(PORTB, DDRB, PINB, SAVE4, BUTTON_MODE_PULL_UP, 10,10);
+    BUTTON Save1(PORTD, DDRD, PIND, SAVE1, BUTTON_MODE_PULL_UP, 10, 10); //<-- Save1 connected to GND
+    BUTTON Save2(PORTD, DDRD, PIND, SAVE2, BUTTON_MODE_PULL_UP, 10, 10);
+    BUTTON Save3(PORTB, DDRB, PINB, SAVE3, BUTTON_MODE_PULL_UP, 10, 10);
+    BUTTON Save4(PORTB, DDRB, PINB, SAVE4, BUTTON_MODE_PULL_UP, 10, 10);
 
-    BUTTON Delete1(PORTD, DDRD, PIND, DELETE1, BUTTON_MODE_PULL_UP, 1,10); //<-- Delete1 connected to GND
-    BUTTON Delete2(PORTD, DDRD, PIND, DELETE2, BUTTON_MODE_PULL_UP, 1,10);
-    BUTTON Delete3(PORTD, DDRD, PIND, DELETE3, BUTTON_MODE_PULL_UP, 1,10);
-    BUTTON Delete4(PORTD, DDRD, PIND, DELETE4, BUTTON_MODE_PULL_UP, 1,10);
+    BUTTON Delete1(PORTD, DDRD, PIND, DELETE1, BUTTON_MODE_PULL_UP, 1, 10); //<-- Delete1 connected to GND
+    BUTTON Delete2(PORTD, DDRD, PIND, DELETE2, BUTTON_MODE_PULL_UP, 1, 10);
+    BUTTON Delete3(PORTD, DDRD, PIND, DELETE3, BUTTON_MODE_PULL_UP, 1, 10);
+    BUTTON Delete4(PORTD, DDRD, PIND, DELETE4, BUTTON_MODE_PULL_UP, 1, 10);
 
-    BUTTON Jumper1(PORTB, DDRB, PINB, JUMPER1, BUTTON_MODE_PULL_UP, 1000,10); //<-- Jumper connected to GND
-    BUTTON Jumper2(PORTB, DDRB, PINB, JUMPER2, BUTTON_MODE_PULL_UP, 10,10);
-    BUTTON Jumper3(PORTB, DDRB, PINB, JUMPER3, BUTTON_MODE_PULL_UP, 10,10);
-    BUTTON Jumper4(PORTB, DDRB, PINB, JUMPER4, BUTTON_MODE_PULL_UP, 10,10);
+    BUTTON Jumper1(PORTB, DDRB, PINB, JUMPER1, BUTTON_MODE_PULL_UP, 1000, 10); //<-- Jumper connected to GND
+    BUTTON Jumper2(PORTB, DDRB, PINB, JUMPER2, BUTTON_MODE_PULL_UP, 10, 10);
+    BUTTON Jumper3(PORTB, DDRB, PINB, JUMPER3, BUTTON_MODE_PULL_UP, 10, 10);
+    BUTTON Jumper4(PORTB, DDRB, PINB, JUMPER4, BUTTON_MODE_PULL_UP, 10, 10);
 
     Save1.bind(BUTTON_MODE_DELAY_ONCE, task_save1);
     Save2.bind(BUTTON_MODE_DELAY_ONCE, task_save2);
@@ -242,7 +241,6 @@ PORTA = 0xFF;
     Jumper3.bind(BUTTON_MODE_RAW, task_Jumper3);
     Jumper4.bind(BUTTON_MODE_RAW, task_Jumper4);
 
-   
     SysTick_Init();
     sei();
     //==================================================================================================
@@ -250,29 +248,20 @@ PORTA = 0xFF;
     //==================================================================================================
     while (1)
     {
-       
 
-            Save1.dispatch(millis());
-            Save2.dispatch(millis());
-            Save3.dispatch(millis());
-            Save4.dispatch(millis());
-      
-      
-
-  
+        Save1.dispatch(millis());
+        Save2.dispatch(millis());
+        Save3.dispatch(millis());
+        Save4.dispatch(millis());
 
         Jumper1.dispatch(millis());
         Jumper2.dispatch(millis());
         Jumper3.dispatch(millis());
         Jumper4.dispatch(millis());
-    
-       
 
         // Delete1.dispatch(millis());
         // Delete2.dispatch(millis());
         // Delete3.dispatch(millis());
         // Delete4.dispatch(millis());
-
-      
     }
 }
