@@ -1,4 +1,3 @@
-
 //******************************************************************************************************
 //
 // File Name    : Firmware AVR
@@ -9,80 +8,80 @@
 // Author:      : Yaser Rashnabadi
 //
 //******************************************************************************************************
-//======================================================================================================
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Interface Header Library use Firmware <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-//======================================================================================================
-
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
 #include "systick.h"
 #include "Button.h"
-//======================================================================================================
-// ----------------------------------------- Macro Setting ---------------------------------------------
-//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 
-#define BUTTON_LED__ON 0
-#define BUTTON_LED_OFF 1
-//----------------------------------------------------
-#define LED1 0
-//==================================================================================================
-// ----------------------------------------------------------------------- Auxiliary functions Macro
-//==================================================================================================
-
-#define LED__ON(_byte_, _bit_) ((_byte_) |= (1UL << (_bit_)))
-#define LED_OFF(_byte_, _bit_) ((_byte_) &= ~(1UL << (_bit_)))
+#define BUTTON_DELAY_ONCE 0
+#define BUTTON_DELAY_REPEAT 1
+#define BUTTON_RELEASE_DELAY_ONCE 2
+#define BUTTON_RELEASE_DELAY_REPEAT 3
 //==================================================================================================
 // ----------------------------------------------------------------------------- Auxiliary functions
 //=================================================================================================
 
-bool task_LedOn(BUTTON &button)
+bool task_DelayOnce(BUTTON &button)
 {
-    LED__ON(PORTB, LED1);
+    PORTA++;
     return true;
 }
 
-bool task_LedOff(BUTTON &button)
+bool task_DelayeRepeat(BUTTON &button)
 {
-    LED_OFF(PORTB, LED1);
+    PORTA++;
     return true;
 }
-//==================================================================================================
-// --------------------------------------------- Main ----------------------------------------------
-//==================================================================================================
+
+bool task_ReleaseDelayOnce(BUTTON &button)
+{
+    PORTB++;
+    return true;
+}
+
+bool task_ReleaseDelayeRepeat(BUTTON &button)
+{
+    PORTB++;
+    return true;
+}
 
 int main()
 {
-    PORTA = 0xFF;
-    DDRA = 0x00;
+    PORTA = 0x00;
+    DDRA = 0xFF;
 
-    PORTB = (uint8_t)(0xFF & ~((1 << LED1)));
-    DDRB = (uint8_t)(0x00 | ((1 << LED1)));
+    PORTB = 0x00;
+    DDRB = 0xFF;
 
     PORTC = 0xFF;
     DDRC = 0x00;
 
-    PORTD = 0xFF;
-    DDRD = 0x00;
 
-    ACSR = 0x80;
-    SFIOR = 0x00;
+    BUTTON button1(PORTC, DDRC, PINC, BUTTON_DELAY_ONCE, BUTTON_MODE_PULL_UP, 10, 100);
+    BUTTON button2(PORTC, DDRC, PINC, BUTTON_DELAY_REPEAT, BUTTON_MODE_PULL_UP, 10, 100);
 
-    BUTTON ledOn(PORTD, DDRD, PIND, BUTTON_LED__ON, BUTTON_MODE_PULL_UP, 10, 100);
-    BUTTON ledOff(PORTD, DDRD, PIND, BUTTON_LED_OFF, BUTTON_MODE_PULL_UP, 10, 100);
+    button1.bind(BUTTON_MODE_DELAY_ONCE, task_DelayOnce);
+    button2.bind(BUTTON_MODE_DELAY_REPEAT, task_DelayeRepeat);
 
-    ledOn.bind(BUTTON_MODE_DELAY_ONCE, task_LedOn);
-    ledOff.bind(BUTTON_MODE_DELAY_ONCE, task_LedOff);
+
+
+    BUTTON button3(PORTC, DDRC, PINC, BUTTON_RELEASE_DELAY_ONCE, BUTTON_MODE_PULL_UP, 10, 100);
+    BUTTON button4(PORTC, DDRC, PINC, BUTTON_RELEASE_DELAY_REPEAT, BUTTON_MODE_PULL_UP, 10, 100);
+
+    button3.bind(BUTTON_MODE_RELEASE_DELAY_ONCE, task_ReleaseDelayOnce);
+    button4.bind(BUTTON_MODE_RELEASE_DELAY_REPEAT, task_ReleaseDelayeRepeat);
 
     SysTick_Init();
     sei();
-    //==================================================================================================
-    //--------------------------------------------- Loop -----------------------------------------------
-    //==================================================================================================
+
     while (1)
     {
-        ledOn.dispatch(millis());
-        ledOff.dispatch(millis());
+        button1.dispatch(millis());
+        button2.dispatch(millis());
+
+        button3.dispatch(millis());
+        button4.dispatch(millis());
     }
 }

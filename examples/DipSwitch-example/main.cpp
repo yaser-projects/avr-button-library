@@ -73,7 +73,7 @@ static uint8_t OutPut;
 //==================================================================================================
 //----------------- Save functions - Turn ON relays for Save operation -----------------------------
 
-bool task_LedOn(BUTTON &button)
+bool task_DelayOnce(BUTTON &button)
 {
     PORTC++;
     // uint8_t save = 0;
@@ -86,7 +86,7 @@ bool task_LedOn(BUTTON &button)
     return true; //<-- Return true for execute handler only once after button state changed
 }
 
-bool task_LedOff(BUTTON &button)
+bool task_DelayeRepeat(BUTTON &button)
 {
     uint8_t save = 0;
     LED__ON(save, RELEY2);
@@ -226,8 +226,8 @@ int main()
     BUTTON Jumper3(PORTB, DDRB, PINB, JUMPER3, BUTTON_MODE_PULL_UP, 10, 10);
     BUTTON Jumper4(PORTB, DDRB, PINB, JUMPER4, BUTTON_MODE_PULL_UP, 10, 10);
 
-    Save1.bind(BUTTON_MODE_DELAY_ONCE, task_LedOn);
-    Save2.bind(BUTTON_MODE_DELAY_ONCE, task_LedOff);
+    Save1.bind(BUTTON_MODE_DELAY_ONCE, task_DelayOnce);
+    Save2.bind(BUTTON_MODE_DELAY_ONCE, task_DelayeRepeat);
     Save3.bind(BUTTON_MODE_DELAY_ONCE, task_save3);
     Save4.bind(BUTTON_MODE_DELAY_ONCE, task_save4);
 
