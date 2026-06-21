@@ -8,8 +8,9 @@
 // Author:      : Yaser Rashnabadi
 //
 //******************************************************************************************************
+#define F_CPU 8000000UL
+
 #include <avr/io.h>
-#include <util/delay.h>
 #include <avr/interrupt.h>
 
 #include "systick.h"
@@ -19,8 +20,9 @@
 #define BUTTON_DELAY_REPEAT 1
 #define BUTTON_RELEASE_DELAY_ONCE 2
 #define BUTTON_RELEASE_DELAY_REPEAT 3
-//==================================================================================================
-// ----------------------------------------------------------------------------- Auxiliary functions
+#define Jamper_REPEAT 7
+//=================================================================================================
+// Auxiliary functions
 //=================================================================================================
 
 bool task_DelayOnce(BUTTON &button)
@@ -47,6 +49,12 @@ bool task_ReleaseDelayeRepeat(BUTTON &button)
     return true;
 }
 
+bool task_JamperDelayeRepeat(BUTTON &button)
+{
+    PORTD++;
+    return true;
+}
+
 int main()
 {
     PORTA = 0x00;
@@ -58,20 +66,23 @@ int main()
     PORTC = 0xFF;
     DDRC = 0x00;
 
+    PORTD = 0x00;
+    DDRD = 0xFF;
 
-    BUTTON button1(PORTC, DDRC, PINC, BUTTON_DELAY_ONCE, BUTTON_MODE_PULL_UP, 10, 100);
-    BUTTON button2(PORTC, DDRC, PINC, BUTTON_DELAY_REPEAT, BUTTON_MODE_PULL_UP, 10, 100);
+    BUTTON button1(PORTC, DDRC, PINC, BUTTON_DELAY_ONCE, BUTTON_MODE_PULL_UP, 10, 3000);
+    BUTTON button2(PORTC, DDRC, PINC, BUTTON_DELAY_REPEAT, BUTTON_MODE_PULL_UP, 10, 500);
 
     button1.bind(BUTTON_MODE_DELAY_ONCE, task_DelayOnce);
     button2.bind(BUTTON_MODE_DELAY_REPEAT, task_DelayeRepeat);
 
-
-
-    BUTTON button3(PORTC, DDRC, PINC, BUTTON_RELEASE_DELAY_ONCE, BUTTON_MODE_PULL_UP, 10, 100);
-    BUTTON button4(PORTC, DDRC, PINC, BUTTON_RELEASE_DELAY_REPEAT, BUTTON_MODE_PULL_UP, 10, 100);
+    BUTTON button3(PORTC, DDRC, PINC, BUTTON_RELEASE_DELAY_ONCE, BUTTON_MODE_PULL_UP, 10, 1000);
+    BUTTON button4(PORTC, DDRC, PINC, BUTTON_RELEASE_DELAY_REPEAT, BUTTON_MODE_PULL_UP, 10, 500);
 
     button3.bind(BUTTON_MODE_RELEASE_DELAY_ONCE, task_ReleaseDelayOnce);
     button4.bind(BUTTON_MODE_RELEASE_DELAY_REPEAT, task_ReleaseDelayeRepeat);
+
+    BUTTON button5(PORTC, DDRC, PINC, Jamper_REPEAT, BUTTON_MODE_PULL_UP, 10, 0);
+    button5.bind(BUTTON_MODE_RAW, task_JamperDelayeRepeat);
 
     SysTick_Init();
     sei();
@@ -83,5 +94,7 @@ int main()
 
         button3.dispatch(millis());
         button4.dispatch(millis());
+
+        button5.dispatch(millis());
     }
 }
